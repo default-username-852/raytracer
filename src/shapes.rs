@@ -125,6 +125,60 @@ impl SceneObject for Plane {
     }
 }
 
+pub struct Triangle {
+    points: (Vector3, Vector3, Vector3),
+    plane: Plane,
+}
+
+impl Triangle {
+    pub fn new<T: Into<Vector3>, U: Into<Vector3>, V: Into<Vector3>>(p1: T, p2: U, p3: V, material: Material) -> Self {
+        let p1v = p1.into();
+        let p2v = p2.into();
+        let p3v = p3.into();
+        let plane = Plane::new(p1v, p2v, p3v, material);
+
+        Self {
+            points: (p1v, p2v, p3v),
+            plane,
+        }
+    }
+
+    fn inside(&self, point: &Vector3) -> bool {
+        (self.points.1 - self.points.0).cross(*point - self.points.0).dot(self.plane.coefficients) > 0.0 &&
+            (self.points.2 - self.points.1).cross(*point - self.points.1).dot(self.plane.coefficients) > 0.0 &&
+            (self.points.0 - self.points.2).cross(*point - self.points.2).dot(self.plane.coefficients) > 0.0
+    }
+}
+
+impl SceneObject for Triangle {
+    fn ray_intersects(&self, ray: &Ray) -> Option<Vector3> {
+        match self.plane.ray_intersects(ray) {
+            Some(point) => {
+                if self.inside(&point) {
+                    return Some(point);
+                } else {
+                    return None;
+                }
+            }
+            None => {
+                return None;
+            }
+        }
+    }
+
+    fn normal(&self, point: &Vector3) -> Vector3 {
+        if self.inside(point) {
+            return self.plane.normal(point);
+        } else {
+            panic!();
+        }
+    }
+
+    fn get_material(&self) -> &Material {
+        &self.plane.material
+    }
+}
+
 #[derive(PartialEq, Debug, Copy, Clone)]
 pub struct Light {
     position: Vector3,
