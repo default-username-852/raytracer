@@ -109,7 +109,7 @@ impl Camera {
 
                             let col_ray = ColorRay {};
                             let ray = Ray::new(self_pos, (x_t, y_t, 1.0));
-                            let col = col_ray.cast(scene_copy.as_ref(), &ray, 10);
+                            let col = col_ray.cast(scene_copy.as_ref(), &ray, 2);
 
                             out_t.send((x, y, col)).unwrap();
                         }
