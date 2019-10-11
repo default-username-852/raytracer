@@ -59,7 +59,7 @@ impl SceneObject for Sphere {
     }
 
     fn normal(&self, point: &Vector3) -> Vector3 {
-        if ((*point - self.center).mag() - self.radius).abs() >= 0.001 {
+        if (Vector3::dist_between(point, &self.center) - self.radius).abs() >= 0.001 {
             println!("{}", ((*point - self.center).mag() - self.radius).abs());
             panic!("point isn't on sphere");
         }
