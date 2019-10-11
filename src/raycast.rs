@@ -21,12 +21,13 @@ impl Ray {
     }
 
     pub fn cast<'a>(&self, scene: &'a Scene) -> Option<(Vector3, &'a Box<dyn SceneObject + Send + Sync>)> {
-        let mut hit: Vector3 = (10000.0, 10000.0, 10000.0).into();
+        let mut hit: Vector3 = (10000.0, 10000.0, 10000.0).into(); //TODO: save as distance
         let mut hit_object: Option<&Box<dyn SceneObject + Send + Sync>> = None;
         for object in scene.get_objects() {
             let found = object.ray_intersects(&self);
             if found.is_some() {
-                if (self.origin - found.unwrap()).mag() < (self.origin - hit).mag() && (self.origin - found.unwrap()).mag() > 0.001 {
+                if Vector3::dist_between(&self.origin, &found.unwrap()) < Vector3::dist_between(&self.origin, &hit)
+                    && Vector3::dist_between(&self.origin, &found.unwrap()) > 0.001 {
                     hit = found.unwrap();
                     hit_object = Some(object);
                 }
