@@ -27,10 +27,10 @@ fn main() {
 
     //Front and back walls
     scene.add(Box::new(Plane::new((-1.0, -1.0, 20.0), (-1.0, 0.0, 20.0), (0.0, -1.0, 20.0), Material::new((0.9, 0.0, 1.0), 0.2))));
-    scene.add(Box::new(Plane::new((-1.0, -1.0, 0.0), (1.0, -1.0, 0.0), (-1.0, 1.0, 0.0), Material::new((0.2, 0.5, 0.5), 0.1))));
+    scene.add(Box::new(Plane::new((-1.0, -1.0, -0.1), (1.0, -1.0, -0.1), (-1.0, 1.0, -0.1), Material::new((0.2, 0.5, 0.5), 0.1))));
 
-    scene.add_light(Light::new((-9.0, 6.0, 12.0), (1.0, 1.0, 1.0), 0.3));
-    scene.add_light(Light::new((9.0, 6.0, 12.0), (1.0, 1.0, 1.0), 0.3));
+    //scene.add_light(Light::new((0.0, 4.5, 9.0), (1.0, 1.0, 1.0), 0.3));
+    scene.add_light(Light::new((0.0, 4.5, 7.0), (1.0, 1.0, 1.0), 0.3));
 
     Scene::render(scene);
 }
